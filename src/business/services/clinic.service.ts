@@ -26,10 +26,11 @@ export class ClinicService {
 
   async list(page = 1, limit = 10, search = '') {
     const offset = (page - 1) * limit;
+    const searchTerm = `%${search}%`.toLowerCase();
     const { count, rows } = await this.clinicRepository.findAndCountAll({
       where: {
         nomeClinica: {
-          [Op.like]: `%${search}%`,
+          [Op.iLike]: searchTerm,
         },
       },
       offset,
